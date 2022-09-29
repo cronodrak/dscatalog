@@ -9,7 +9,7 @@ import com.devsuperior.dscatalog.entities.Product;
 public class Factory {
 
 	public static Category createCategory() {
-		Category category = new Category(4L, "Garden");
+		Category category = new Category(1L, "Garden");
 		return category;
 	}
 

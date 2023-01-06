@@ -20,35 +20,34 @@ public class ProductServiceIT {
 
 	@Autowired
 	private ProductService service;
-
+	
 	@Autowired
 	private ProductRepository repository;
-
-	private long existingId;
-	private long nonExistingId;
-	private long countTotalProducts;
-
+	
+	private Long existingId;
+	private Long nonExistingId;
+	private Long countTotalProducts;
+	
 	@BeforeEach
 	void setUp() throws Exception {
 		existingId = 1L;
 		nonExistingId = 1000L;
 		countTotalProducts = 25L;
 	}
-
+	
 	@Test
-	public void deleShouldDeleteResourceWhenIdExists() {
-
+	public void deleteShouldDeleteResourceWhenIdExists() {
+		
 		service.delete(existingId);
 
 		Assertions.assertEquals(countTotalProducts - 1, repository.count());
 	}
-
+	
 	@Test
-	public void deleShouldThrowsResourceNotFoundExceptionWhenDoesNotIdExists() {
-
+	public void deleteShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
+		
 		Assertions.assertThrows(ResourceNotFoundException.class, () -> {
 			service.delete(nonExistingId);
-
 		});
 	}
 	
@@ -59,14 +58,14 @@ public class ProductServiceIT {
 		
 		Page<ProductDTO> result = service.findAllPaged(0L, "", pageRequest);
 		
-		Assertions.assertFalse(result.isEmpty());	
+		Assertions.assertFalse(result.isEmpty());
 		Assertions.assertEquals(0, result.getNumber());
 		Assertions.assertEquals(10, result.getSize());
 		Assertions.assertEquals(countTotalProducts, result.getTotalElements());
 	}
 	
 	@Test
-	public void findAllPagedShouldReturnEmptyPageWhenPageDoesnotExist() {
+	public void findAllPagedShouldReturnEmptyPageWhenPageDoesNotExist() {
 		
 		PageRequest pageRequest = PageRequest.of(50, 10);
 		
@@ -76,7 +75,7 @@ public class ProductServiceIT {
 	}
 	
 	@Test
-	public void findAllPagedShouldReturnSortedPageWhenSortedByName() {
+	public void findAllPagedShouldReturnSortedPageWhenSortByName() {
 		
 		PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("name"));
 		
@@ -85,6 +84,6 @@ public class ProductServiceIT {
 		Assertions.assertFalse(result.isEmpty());
 		Assertions.assertEquals("Macbook Pro", result.getContent().get(0).getName());
 		Assertions.assertEquals("PC Gamer", result.getContent().get(1).getName());
-		Assertions.assertEquals("PC Gamer Alfa", result.getContent().get(2).getName());
+		Assertions.assertEquals("PC Gamer Alfa", result.getContent().get(2).getName());		
 	}
 }
